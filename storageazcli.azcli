@@ -1,0 +1,39 @@
+# Login into Azure
+az login
+
+az account list -o table
+
+# Set one account asthe default
+az acoount set --subscription "AzurePass"
+
+# Get all the resource groups
+az group list
+az group list --query [].name
+
+# Variable declaration
+$rgName = 'rg-armtemplates'
+$location  = 'South India'
+
+# Create a resource group
+az group create `
+     --name $rgName `
+     --location $location 
+
+az group list --query [].name
+
+#Create a blank template
+$templateFile = 'snazuretemplate.json'
+$templateName = 'parametertemplate'
+$storageName = 'snstorage1234xywyzn'
+
+
+az group deployment create `
+    --name $templateName `
+    --resource-group $rgName `
+    --template-file $templateFile `
+    --parameters storageName=$storageName
+
+#Create storage with parameters StorageNamegive sku
+
+# delete a group
+az group delete --name $rgName --no-wait --yes
